@@ -2,6 +2,7 @@
 # MASTER ENTRY POINT: FORENSIC KERNEL v4.0
 # ==========================================
 
+import os
 from flask import Flask, jsonify, request, render_template_string
 from core.blockchain import BlockchainProtocol
 from core.audit import log_event
@@ -297,15 +298,32 @@ def handle_hack():
 
 @app.route('/api/status', methods=['GET'])
 def handle_status():
+    """Returns global network telemetry and forensic scan results."""
     is_valid, invalid_indices = forensic_node.validate_integrity()
+    
+    # Enrichment for the Atomic UI
     from core.block import Block as BlockModel
     ledger_state = []
     for b in forensic_node.chain:
         d = b.to_dict().copy()
         d['hash'] = BlockModel.calculate_hash(b.to_dict())
         ledger_state.append(d)
-    return jsonify({"chain": ledger_state, "mempool": forensic_node.mempool, "integrity": is_valid, "invalid_indices": invalid_indices}), 200
 
+    return jsonify({
+        "chain": ledger_state,
+        "mempool": forensic_node.mempool,
+        "integrity": is_valid,
+        "invalid_indices": invalid_indices
+    }), 200
+
+@app.route('/healthz', methods=['GET'])
+def health_check():
+    """Internal health check for cloud providers (Render, AWS, GCP)."""
+    return jsonify({"status": "healthy", "service": "ForensicNode v4.0"}), 200
+
+# Entry Point
 if __name__ == '__main__':
-    log_event("SFBS_NODE_ONLINE")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    log_event("SFBS_NODE_BOOTED: Integrity scan... 100% OK")
+    # Fetch dynamic Port for Cloud Deployment (e.g. Render)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

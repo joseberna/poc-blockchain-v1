@@ -62,6 +62,16 @@ Accede a `http://127.0.0.1:5000` en tu navegador.
 
 ---
 
+## ☁️ Despliegue en Render
+
+Este repositorio está optimizado para despliegues rápidos en **Render**:
+
+1.  **Build Command**: `pip install -r requirements.txt`
+2.  **Start Command**: `gunicorn blockchain:app`
+3.  **Environment Variable**: Asegúrate de que el puerto se asigne automáticamente (detectado por `os.environ.get("PORT")`).
+
+---
+
 ## 🧬 Objetivos del Ejercicio
 Este proyecto fue diseñado para demostrar los 3 pilares de Blockchain:
 1. **Descentralización y Confianza**: A través del registro inmutable.
