@@ -54,7 +54,7 @@ pip install flask flask-cors
 
 ### 3. Iniciar el Nodo Forense
 ```bash
-python3 blockchain.py
+python3 app.py
 ```
 
 ### 4. Explorar el Laboratorio
@@ -64,11 +64,11 @@ Accede a `http://127.0.0.1:5000` en tu navegador.
 
 ## ☁️ Despliegue en Render
 
-Este repositorio está optimizado para despliegues rápidos en **Render**:
+Este repositorio está optimizado para despliegues rápidos en **Render** mediante el archivo `render.yaml` incluido:
 
-1.  **Build Command**: `pip install -r requirements.txt`
-2.  **Start Command**: `gunicorn blockchain:app`
-3.  **Environment Variable**: Asegúrate de que el puerto se asigne automáticamente (detectado por `os.environ.get("PORT")`).
+1.  **Repo Connect**: Conecta este repositorio en Render.
+2.  **Auto Config**: Render detectará automáticamente el archivo `render.yaml`.
+3.  **Start Command**: `gunicorn app:app` (Gestionado por Render Infrastructure).
 
 ---
 
